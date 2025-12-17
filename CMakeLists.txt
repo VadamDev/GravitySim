@@ -17,6 +17,9 @@ add_executable(GravitySim ../GravitySim/src/main.cpp
         src/engine/clock/FixedStepClock.cpp
         src/engine/clock/FixedStepClock.h
         src/engine/GameLogic.h
+        src/engine/graphics/shader/ShaderProgram.cpp
+        src/engine/graphics/shader/ShaderProgram.h
+        src/engine/utils/FileReader.h
 )
 
 target_link_libraries(${PROJECT_NAME}
