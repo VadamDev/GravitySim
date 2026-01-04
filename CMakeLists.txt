@@ -9,36 +9,10 @@ find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
+file(GLOB_RECURSE PROJECT_SOURCE_FILES src/*.cpp src/*.h)
+
 # Source files
-add_executable(${PROJECT_NAME}
-        src/main.cpp
-
-        src/engine/clock/AbstractClock.h
-        src/engine/clock/FixedStepClock.cpp
-        src/engine/clock/FixedStepClock.h
-
-        src/engine/graphics/shader/ShaderProgram.cpp
-        src/engine/graphics/shader/ShaderProgram.h
-
-        src/engine/utils/FileReader.h
-
-        src/engine/window/Window.cpp
-        src/engine/window/Window.h
-
-        src/engine/AbstractGame.h
-
-        src/game/Game.cpp
-        src/game/Game.h
-        src/engine/GameLifecycle.h
-        src/engine/graphics/shader/exceptions/ShaderException.h
-        src/game/TestShader.cpp
-        src/game/TestShader.h
-        src/engine/graphics/shader/UniformAccess.cpp
-        src/engine/graphics/shader/UniformAccess.h
-        src/engine/graphics/mesh/VertexArrayObject.cpp
-        src/engine/graphics/mesh/VertexArrayObject.h
-        src/engine/graphics/rendering/Renderable.h
-)
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
