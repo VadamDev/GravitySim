@@ -7,6 +7,7 @@
 
 #include "../event/EventDispatcher.h"
 #include "event/WindowResizeEvent.h"
+#include "imgui/ImGuiWindow.h"
 #include "input/InputsManager.h"
 
 namespace engine
@@ -28,7 +29,8 @@ namespace engine
         void pushFrame() noexcept;
         void popFrame() const noexcept;
 
-        void whenResized(const std::function<void(WindowResizeEvent&)>& callback);
+        void whenResized(const std::function<void(WindowResizeEvent&)> &callback);
+        void registerImGuiWindow(const std::shared_ptr<ImGuiWindow> &imguiWindow) { imguiWindows.push_back(imguiWindow); }
 
         /*
          * Getters
@@ -60,6 +62,7 @@ namespace engine
          */
 
         static int getMonitorRefreshRate();
+        static bool wantCapturePeripherals();
 
     private:
         int width, height;
@@ -69,6 +72,8 @@ namespace engine
 
         std::shared_ptr<InputsManager> inputManager;
         EventDispatcher<WindowResizeEvent> resizeDispatcher;
+
+        std::vector<std::shared_ptr<ImGuiWindow>> imguiWindows;
 
         bool resized = true, grabbed = false;
         double dFrameTime = 0, fFrameTime = 0;

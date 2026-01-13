@@ -7,21 +7,34 @@ namespace engine {
 
     ProfilerEntry* SteadyProfiler::newEntry(const std::string &name)
     {
+        if (entries.contains(name))
+            throw std::runtime_error("A profiler with that name already exists!");
+
         auto [it, _] = entries.try_emplace(name, name);
         return &it->second;
     }
 
-    void SteadyProfiler::forEachEntries(const std::function<void(ProfilerEntry&)> &func)
+    ProfilerEntry& SteadyProfiler::retrieveEntry(const std::string &name)
     {
-        for (auto& [_, entry] : entries)
-            func(entry);
+        return entries.at(name);
+    }
+
+    std::vector<ProfilerEntry> SteadyProfiler::allEntries()
+    {
+        std::vector<ProfilerEntry> result;
+        result.reserve(entries.size());
+
+        for(const auto &entry : entries | std::views::values)
+            result.push_back(entry);
+
+        return result;
     }
 
     nanoseconds SteadyProfiler::calculateTotalSpentTime()
     {
         nanoseconds total = nanoseconds::zero();
 
-        for (auto& [_, entry] : entries)
+        for (auto &entry: entries | std::views::values)
             total += entry.getAccumulatedTime();
 
         return total;
@@ -31,7 +44,7 @@ namespace engine {
     {
         uint64_t total = 0;
 
-        for (auto& [_, entry] : entries)
+        for (auto &entry: entries | std::views::values)
             total += entry.getNumCalls();
 
         return total;
@@ -98,5 +111,4 @@ namespace engine {
 
         return accumulatedTime / numCalls;
     }
-
 }

@@ -5,6 +5,7 @@
 #include "TestShader.h"
 #include "../engine/AbstractGame.h"
 #include "../engine/graphics/mesh/VertexArrayObject.h"
+#include "gui/Gui.h"
 
 namespace game
 {
@@ -25,6 +26,8 @@ namespace game
     private:
         std::unique_ptr<engine::VertexArrayObject> vao;
         std::unique_ptr<TestShader> shader;
+
+        std::shared_ptr<Gui> gui;
     };
 }
 

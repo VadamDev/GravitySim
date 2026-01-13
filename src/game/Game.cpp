@@ -28,12 +28,13 @@ namespace game
         vao = std::make_unique<engine::VertexArrayObject>();
         vao->createAndBind(4, engine::RenderType::STRIP);
 
-        const auto *vertices = new float[]{ -1, 1, -1, -1, 1, 1, 1, -1 };
-        vao->genBuffer(sizeof(float) * 2 * 4, vertices, GL_STATIC_DRAW, 2, GL_FLOAT);
-
-        delete vertices;
+        const std::vector<float> vertices = { -1, 1, -1, -1, 1, 1, 1, -1 };
+        vao->genBuffer(sizeof(float) * 2 * 4, vertices.data(), GL_STATIC_DRAW, 2, GL_FLOAT);
 
         vao->ready();
+
+        gui = std::make_shared<Gui>(this);
+        window.registerImGuiWindow(gui);
     }
 
     void Game::update()
@@ -43,12 +44,11 @@ namespace game
 
     void Game::processInputs(float deltaTime)
     {
-        const auto inputManager = getWindow().getInputsManager();
+        const auto inputManager = window.getInputsManager();
 
-        auto& window = getWindow();
-        if (inputManager->isMouseButtonDown(mouse_buttons::BUTTON_1) && !window.isGrabbed())
+        if (inputManager->isMouseButtonDown(engine::MouseButton::BUTTON_1) && !window.isGrabbed() && !engine::Window::wantCapturePeripherals())
             window.setGrabbed(true);
-        else if (inputManager->isKeyDown(keyboard_keys::KEY_ESCAPE) && window.isGrabbed())
+        else if (inputManager->isKeyDown(engine::KeyboardKeys::KEY_ESCAPE) && window.isGrabbed())
             window.setGrabbed(false);
     }
 
@@ -58,7 +58,7 @@ namespace game
 
         shader->bind();
 
-        shader->frameTime->set1f(getWindow().getFrameTimeF());
+        shader->frameTime->set1f(window.getFrameTimeF());
         vao->render();
 
         TestShader::unbind();

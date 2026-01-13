@@ -9,7 +9,7 @@ using namespace game;
 
 int main()
 {
-    engine::Window window(960, 540, "GLFW Window");
+    engine::Window window(1280, 720, "Raytracing");
 
     try { window.create(); }
     catch (std::runtime_error &e)

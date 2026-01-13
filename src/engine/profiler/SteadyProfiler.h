@@ -1,7 +1,6 @@
 #pragma once
 
 #include <chrono>
-#include <functional>
 #include <unordered_map>
 #include <spdlog/spdlog.h>
 
@@ -19,9 +18,13 @@ namespace engine {
 
     public:
         ProfilerEntry* newEntry(const std::string &name);
-        void forEachEntries(const std::function<void(ProfilerEntry&)> &func);
+        ProfilerEntry& retrieveEntry(const std::string &name);
+
+        std::vector<ProfilerEntry> allEntries();
 
         nanoseconds calculateTotalSpentTime();
+        float calculateTotalSpentTimeMs() { return calculateTotalSpentTime().count() / 1e6f; }
+
         uint64_t calculateTotalNumCalls();
 
         uint64_t profilersCount() const { return entries.size(); }
@@ -60,15 +63,23 @@ namespace engine {
 
         std::string& getName() { return name; }
 
+        //Start / End time of the profiler
         time_point<steady_clock> getStartTime() const { return startTime; }
         time_point<steady_clock> getEndTime() const { return endTime; }
 
+        //Total accumulated time since profiler started
         nanoseconds getAccumulatedTime() const { return accumulatedTime; }
-        nanoseconds getLastSpentTime() const { return lastSpentTime; }
 
+        //Last spent time
+        nanoseconds getLastSpentTime() const { return lastSpentTime; }
+        float getLastSpentTimeMs() const { return getLastSpentTime().count() / 1e6f; }
+
+        //Amount of time the profiler has run
         uint64_t getNumCalls() const { return numCalls; }
 
+        //Average time spent
         nanoseconds calculateSpentTimeAvg() const;
+        float calculateSpentTimeAvgMs() const { return calculateSpentTimeAvg().count() / 1e6f; }
 
         bool isProfiling() const { return bProfiling; }
         bool isClosed() const { return bClosed; }

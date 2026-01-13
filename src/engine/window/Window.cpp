@@ -1,5 +1,9 @@
 #include "Window.h"
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include "spdlog/spdlog.h"
 
 namespace engine
@@ -7,7 +11,13 @@ namespace engine
     Window::~Window()
     {
         if(window != nullptr)
+        {
+            ImGui_ImplOpenGL3_Shutdown();
+            ImGui_ImplGlfw_Shutdown();
+            ImGui::DestroyContext();
+
             glfwDestroyWindow(window);
+        }
 
         glfwTerminate(); //Have no effect when GLFW is not initialized so no need to add a check, I think... Maybe? Eh...
     }
@@ -55,10 +65,20 @@ namespace engine
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
             throw std::runtime_error("Failed to initialize OpenGL context");
 
+        //Show OpenGL version
+        spdlog::info("OpenGL version is {}", std::string_view(reinterpret_cast<const char*>(glGetString(GL_VERSION))));
+
         //Show the window
         glfwShowWindow(window);
 
-        spdlog::info("OpenGL version is {}", std::string_view(reinterpret_cast<const char*>(glGetString(GL_VERSION))));
+        //Setup Imgui
+        IMGUI_CHECKVERSION();
+
+        ImGui::CreateContext();
+        ImGui::StyleColorsDark();
+
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 460");
     }
 
     void Window::setupCallbacks()
@@ -122,10 +142,25 @@ namespace engine
         fFrameTime = static_cast<float>(dFrameTime);
 
         inputManager->getMouse().processDeltas();
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
     }
 
     void Window::popFrame() const noexcept
     {
+        for (auto &imguiWindow : imguiWindows)
+        {
+            if (!imguiWindow->shouldDraw())
+                continue;
+
+            imguiWindow->draw();
+        }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
@@ -167,5 +202,11 @@ namespace engine
     int Window::getMonitorRefreshRate()
     {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->refreshRate;
+    }
+
+    bool Window::wantCapturePeripherals()
+    {
+        const ImGuiIO &io = ImGui::GetIO();
+        return io.WantCaptureMouse || io.WantCaptureKeyboard;
     }
 }

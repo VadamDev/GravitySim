@@ -3,9 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
 
-namespace mouse_buttons
+namespace engine
 {
-    enum MouseButton
+    enum class MouseButton
     {
         BUTTON_1 = GLFW_MOUSE_BUTTON_1,
         BUTTON_2 = GLFW_MOUSE_BUTTON_2,
@@ -16,10 +16,7 @@ namespace mouse_buttons
         BUTTON_7 = GLFW_MOUSE_BUTTON_7,
         BUTTON_8 = GLFW_MOUSE_BUTTON_8
     };
-}
 
-namespace engine
-{
     class Mouse
     {
 

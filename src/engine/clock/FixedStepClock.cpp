@@ -29,8 +29,8 @@ namespace engine
 
     void FixedStepClock::setupProfilers()
     {
-        updateProfiler = gameProfiler.newEntry("Game Update");
-        renderProfiler = gameProfiler.newEntry("Frame Render");
+        updateProfiler = gameProfiler.newEntry(UPDATE_PROFILER);
+        renderProfiler = gameProfiler.newEntry(RENDER_PROFILER);
     }
 
     void FixedStepClock::loop()

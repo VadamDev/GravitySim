@@ -2,9 +2,9 @@
 
 #include "GLFW/glfw3.h"
 
-namespace keyboard_keys
+namespace engine
 {
-    enum KeyboardKeys
+    enum class KeyboardKeys : int
     {
         KEY_SPACE              = GLFW_KEY_SPACE,
         KEY_APOSTROPHE         = GLFW_KEY_APOSTROPHE,
@@ -127,10 +127,7 @@ namespace keyboard_keys
         KEY_RIGHT_SUPER        = GLFW_KEY_RIGHT_SUPER,
         KEY_MENU               = GLFW_KEY_MENU
     };
-}
 
-namespace engine
-{
     class Keyboard
     {
 

@@ -8,6 +8,8 @@ namespace engine
     static constexpr int64_t NANO = 1e9;
     static constexpr float NANO_F = 1e9f;
 
+    static constexpr auto UPDATE_PROFILER = "Update", RENDER_PROFILER = "Render";
+
     class FixedStepClock : public AbstractClock {
 
     public:
@@ -26,6 +28,10 @@ namespace engine
 
         int getUPS() const { return ups; }
         int getFPS() const override { return fps; }
+
+        SteadyProfiler& getProfiler() { return gameProfiler; }
+        ProfilerEntry* getUpdateProfiler() const { return updateProfiler; }
+        ProfilerEntry* getRenderProfiler() const { return renderProfiler; }
 
         /*
            Setters

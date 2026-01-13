@@ -41,7 +41,7 @@ namespace engine
         Window& getWindow() const { return window; }
         AbstractClock* getClock() const { return clock; }
 
-    private:
+    protected:
         Window &window;
         AbstractClock *clock = nullptr;
     };

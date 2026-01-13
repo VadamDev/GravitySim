@@ -14,6 +14,7 @@ namespace engine
          */
 
         bool isMouseButtonDown(const int button) const { return mouse.isPressed(button); }
+        bool isMouseButtonDown(const MouseButton button) const { return isMouseButtonDown(static_cast<int>(button)); }
 
         glm::dvec2 getMousePos() const { return mouse.getPos(); }
         glm::dvec2 getMouseDelta() const { return mouse.getDelta(); }
@@ -25,7 +26,8 @@ namespace engine
          * Keyboard
          */
 
-        bool isKeyDown(const int key) { return keyboard.isKeyDown(key); }
+        bool isKeyDown(const int key) const { return keyboard.isKeyDown(key); }
+        bool isKeyDown(const KeyboardKeys key) const { return isKeyDown(static_cast<int>(key)); }
 
         Mouse& getMouse() { return mouse; }
         Keyboard& getKeyboard() { return keyboard; }
