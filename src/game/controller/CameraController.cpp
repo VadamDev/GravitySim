@@ -3,6 +3,9 @@
 namespace game
 {
     static constexpr float SENSITIVITY = 0.2f;
+    static constexpr float CAMERA_SPEED = 8;
+
+    static constexpr glm::vec3 WORLD_UP(0, 1, 0);
 
     void CameraController::processInputs(float deltaTime)
     {
@@ -49,10 +52,47 @@ namespace game
 
     bool CameraController::processKeyboardMovements(float deltaTime) const
     {
-        bool hasProcessed = false;
+        float xOffset = 0, yOffset = 0, zOffset = 0;
 
-        //TODO: keyboard movements
+        if (inputsManager->isKeyDown(engine::KeyboardKeys::KEY_W))
+            zOffset += CAMERA_SPEED;
 
-        return hasProcessed;
+        if (inputsManager->isKeyDown(engine::KeyboardKeys::KEY_A))
+            xOffset -= CAMERA_SPEED;
+
+        if (inputsManager->isKeyDown(engine::KeyboardKeys::KEY_S))
+            zOffset -= CAMERA_SPEED;
+
+        if (inputsManager->isKeyDown(engine::KeyboardKeys::KEY_D))
+            xOffset += CAMERA_SPEED;
+
+        if (inputsManager->isKeyDown(engine::KeyboardKeys::KEY_SPACE))
+            yOffset += CAMERA_SPEED;
+
+        if (inputsManager->isKeyDown(engine::KeyboardKeys::KEY_LEFT_CONTROL))
+            yOffset -= CAMERA_SPEED;
+
+        if (xOffset != 0 || yOffset != 0 || zOffset != 0)
+        {
+            move(xOffset * deltaTime, yOffset * deltaTime, zOffset * deltaTime);
+            return true;
+        }
+
+        return false;
+    }
+
+    void CameraController::move(const float xOffset, const float yOffset, const float zOffset) const
+    {
+        const float yawRad = glm::radians(camera->rotation.y);
+
+        glm::vec3 forward(sin(yawRad), 0, cos(yawRad));
+        forward = glm::normalize(forward);
+
+        const glm::vec3 right = glm::normalize(glm::cross(WORLD_UP, forward));
+
+        glm::vec3 &pos = camera->position;
+        pos += forward * zOffset;
+        pos += right * xOffset;
+        pos += WORLD_UP * yOffset;
     }
 }

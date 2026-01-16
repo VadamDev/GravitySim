@@ -18,5 +18,7 @@ namespace game
 
         bool processMouseMovements() const;
         bool processKeyboardMovements(float deltaTime) const;
+
+        void move(float xOffset, float yOffset, float zOffset) const;
     };
 }
