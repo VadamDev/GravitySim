@@ -15,8 +15,9 @@ namespace game
 
         void setupUniforms() override;
     private:
-        using UniformAccess = std::unique_ptr<engine::UniformAccess>;
+        using UniformAccess = std::unique_ptr<engine::IUniformAccess>;
 
+        UniformAccess screenParams;
         UniformAccess viewParams; //planeWidth, planeHeight, focalLength
         UniformAccess cameraPos;
 

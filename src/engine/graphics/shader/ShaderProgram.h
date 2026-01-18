@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "UniformAccess.h"
+#include "IUniformAccess.h"
 #include "exceptions/ShaderException.h"
 
 namespace engine {
@@ -19,7 +19,7 @@ namespace engine {
         void bind() const;
         static void unbind();
 
-        std::unique_ptr<UniformAccess> accessUniform(const std::string &name) const;
+        std::unique_ptr<IUniformAccess> accessUniform(const std::string &name) const;
 
         static unsigned int createShader(const char *source, unsigned int type);
 

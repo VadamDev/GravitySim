@@ -1,6 +1,7 @@
 #include "ShaderProgram.h"
 
 #include "../../utils/FileReader.h"
+#include "UniformAccess.h"
 #include "exceptions/ShaderException.h"
 
 namespace engine {
@@ -57,11 +58,14 @@ namespace engine {
         glUseProgram(0);
     }
 
-    std::unique_ptr<UniformAccess> ShaderProgram::accessUniform(const std::string &name) const
+    std::unique_ptr<IUniformAccess> ShaderProgram::accessUniform(const std::string &name) const
     {
         const int location = glGetUniformLocation(programId, name.c_str());
         if (location < 0)
-            throw exceptions::UniformException(std::format("Failed to retrieve uniform location for {}", name), name, location);
+        {
+            spdlog::warn(std::format("Failed to retrieve uniform location for {}, returned a placeholder instead", name));
+            return std::make_unique<NoOpUniformAccess>();
+        }
 
         return std::make_unique<UniformAccess>(location);
     }

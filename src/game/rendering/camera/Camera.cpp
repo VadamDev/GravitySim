@@ -13,6 +13,9 @@ namespace game
     void Camera::registerCallbacks(engine::Window *window)
     {
         window->whenResized([this](const engine::WindowResizeEvent &event) {
+            this->windowWidth = event.getNewWidth();
+            this->windowHeight = event.getNewHeight();
+
             this->aspectRatio = event.getNewAspectRatio();
         });
     }

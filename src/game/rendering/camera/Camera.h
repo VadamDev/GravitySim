@@ -19,7 +19,10 @@ namespace game
 
         void updateLocalToWorldMatrix();
 
+        int getWindowWidth() const { return windowWidth; }
+        int getWindowHeight() const { return windowHeight; }
         float getAspectRatio() const { return aspectRatio; }
+
         glm::mat4& getLocalToWorldMatrix() { return localToWorldMatrix; }
 
         float fov, nearClipPlane;
@@ -28,7 +31,8 @@ namespace game
         glm::vec2 rotation = glm::vec2(0, 0);
 
     private:
-        float aspectRatio;
+        int windowWidth = 0, windowHeight = 0;
+        float aspectRatio = 0;
 
         glm::mat4 localToWorldMatrix = glm::identity<glm::mat4>();;
 
