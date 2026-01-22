@@ -21,7 +21,7 @@ namespace game
 
     }
 
-    void Game::processInputs(float deltaTime)
+    void Game::processInputs(const float deltaTime)
     {
         const auto inputManager = window.getInputsManager();
 
