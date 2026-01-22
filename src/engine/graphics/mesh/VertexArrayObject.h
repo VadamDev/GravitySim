@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../rendering/IRenderable.h"
+#include "../IRenderable.h"
 #include <unordered_map>
 
 namespace engine

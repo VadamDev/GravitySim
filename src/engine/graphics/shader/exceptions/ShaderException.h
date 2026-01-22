@@ -76,25 +76,4 @@ namespace engine::exceptions
     public:
         using ProgramException::ProgramException;
     };
-
-    /*
-       Uniform
-     */
-
-    class UniformException : public std::runtime_error
-    {
-
-    public:
-        explicit UniformException(const std::string &message, const std::string &name, const int position)
-            : UniformException(message.c_str(), name, position) {}
-
-        explicit UniformException(const char *message, const std::string &name, const int position)
-            : runtime_error(message), name(name), position(position) {}
-
-        std::string getName() const { return name; }
-        int getPosition() const { return position; }
-    private:
-        const std::string &name;
-        const int position;
-    };
 }
