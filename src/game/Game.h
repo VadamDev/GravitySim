@@ -2,18 +2,18 @@
 
 #include <memory>
 
-#include "../engine/AbstractGame.h"
+#include "../engine/Application.h"
 #include "controller/CameraController.h"
 #include "gui/Gui.h"
 #include "rendering/Renderer.h"
 
 namespace game
 {
-    class Game : public engine::AbstractGame
+    class Game : public engine::Application
     {
 
     public:
-        using AbstractGame::AbstractGame;
+        using Application::Application;
 
         void init() override;
 
