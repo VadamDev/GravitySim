@@ -6,7 +6,10 @@ namespace engine
 {
     Framebuffer::~Framebuffer()
     {
+        unbind();
 
+        glDeleteFramebuffers(1, &framebufferHandle);
+        glDeleteTextures(1, &colorTextureId);
     }
 
     void Framebuffer::create()
